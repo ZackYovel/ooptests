@@ -1,4 +1,4 @@
-
+//comment
 public class Test {
 
     static final Customer customerList[] = new Customer[10];
