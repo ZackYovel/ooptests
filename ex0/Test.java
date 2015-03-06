@@ -186,7 +186,7 @@ public class Test {
 	    String expected = "Shopping log for customer: Jhon Doe";
 	    String actual = customer.getPurchaseLog();
 	    if (!expected.equals(actual)){
-	        System.out.println("test4 failed: customer didn't buy a thing," +
+	        System.out.println("test5 failed: customer didn't buy a thing," +
 	                " expected log:\n" + expected + "\nactual:\n" + actual);
 	    }
 	}
