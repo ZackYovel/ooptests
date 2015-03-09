@@ -1,3 +1,6 @@
+/*line 100 my couse div by zero probloem in the max_afford method,to avoid fix the method or delte the line,
+there is no define instrcutions to max_afford when the price is 0.*/
+
 class test{
     public static void main(String[] args){
         ProductType apple = new ProductType("apple",1,2);
@@ -105,6 +108,8 @@ class test{
 }        
 
 
-/* i had a problem of starting a new line after addition to the logs,if you 
-see in the cmd more than one space between lines it could cause mastakes...just sying
+/* 
+#i had a problem of starting a new line after addition to the logs,if you 
+see in the cmd more than one space between lines it could cause mastakes...just saying
+# compering to primiteves (espacially null) with .equal could couse problomes.
 thanks to Natanel Ficher on a correction*/
