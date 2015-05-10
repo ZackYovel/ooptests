@@ -1,6 +1,7 @@
 package oop.ex4.data_structures;
 
 import java.io.File;
+import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
 
@@ -13,12 +14,9 @@ public class FromFilesTester {
 
     private static AvlTree myTree;  // The general AvlTree type variable that the tester works with.
 
-    private static final String FULL_PATH = "./src/oop/ex4/data_structures/tests/";
-    private static final String RELATIVE_PATH = "./tests/";
+    private static final String FULL_PATH = "tests/";
 
-    private static final String PATH_CHOSEN = RELATIVE_PATH;  // THIS PATH WILL BE USED TO FIND TEST FOLDER.
-
-
+    private static final Scanner userInput = new Scanner(System.in);
 
     private static final int MAX_WORDS = 20;  // Maximum words per line. example: add 1 true (3). etc..
     private static final int MAX_LINES = 20;  // Maximum lines of commands in a file.
@@ -47,15 +45,16 @@ public class FromFilesTester {
      * Loads all the files, lines and splits to words.
      * @throws Exception - Throws a nuke.
      */
-    public static void getAllTestsFiles() throws Exception{
+    public static void getAllTestsFiles(String path) throws Exception{
         try{
-            File folder = new File(PATH_CHOSEN);
+            File folder = new File(path);
             File[] filesList = folder.listFiles();
+
             fileNames = new String[filesList.length];
             test = new String[filesList.length][MAX_LINES][MAX_WORDS];
             for (int file = 0; file<test.length; file++){
                 fileNames[file] = filesList[file].getName();
-                String[] lines = Ex3Utils.fileToLines(PATH_CHOSEN + filesList[file].getName());
+                String[] lines = Ex3Utils.fileToLines(path+fileNames[file]);
                 for (int line = 0; line < lines.length; line++){
                     String[] words = lines[line].split(" ");
                     for (int word = 0; word < words.length; word++){
@@ -173,7 +172,7 @@ public class FromFilesTester {
                 printError("Failed at deleted method!" + "\nFile: " + fileNames[currentFile] + "\nLine: " + currentLine );
             }
         } catch (Exception e){
-            printError("Failed at deleted method!" + "\nFile: " + fileNames[currentFile] + "\nLine: " + currentLine);
+            printError("Failed at deleted method!" + "\nFile: " + fileNames[currentFile] + "\nLine: " + currentLine );
         }
     }
 
@@ -183,7 +182,7 @@ public class FromFilesTester {
      */
     private static void printError(String message){
         try {
-            TimeUnit.MILLISECONDS.sleep(500);
+            TimeUnit.MILLISECONDS.sleep(800);
         } catch (InterruptedException e) {
             //Handle exception
         }
@@ -231,10 +230,30 @@ public class FromFilesTester {
         System.err.println("            \\_\\");
     }
 
+    private static String takeInputFromUser(){
+        System.out.print("Enter path to tests folder: ");
+        String path = userInput.nextLine();
+        if (path.charAt(path.length()-1) != '/' && path.charAt(path.length()-1) != '\\' ){
+            path += "\\";
+        }
+        return path;
+    }
+
 
     public static void main(String args[]){
+        String path = "src\\oop\\ex4\\data_structures\\tests\\";
         try{
-            getAllTestsFiles();  // Loads all files,lines and words.
+            try{
+                File folder = new File(path);
+                File[] filesList = folder.listFiles();
+                if (filesList == null){
+                    throw new Exception();
+                }
+            }catch (Exception e){
+                System.err.println("Couldn't find tests folder using: "+ "'" + path + "'");
+                path = takeInputFromUser();
+            }
+            getAllTestsFiles(path);  // Loads all files,lines and words.
             currentFile = 0;  // Counter to keep current file updated.
             currentLine = 1;
             for (String[][] file: test){  // Iterates on files
