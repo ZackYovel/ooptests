@@ -2,7 +2,9 @@ package oop.ex4.data_structures;
 
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TestWatcher;
 import org.junit.rules.Timeout;
+import org.junit.runner.Description;
 
 import java.io.File;
 
@@ -41,6 +43,59 @@ public class FromFilesTester {
     private static final int CMD = 0;
     private static final int VALUE = 1;
     private static final int RESULT = 2;
+
+    @Rule
+    public PrintThumbs ruleExample = new PrintThumbs();  // Has to be declared in-order to print thumbs up
+    // or thumbs down on failure or success.
+
+    /**
+     * Called upon test failed or test finished!
+     * Overrides the default TestWatcher 'failed' and 'finished' methods.
+     */
+    public class PrintThumbs extends TestWatcher {
+        @Override
+        protected void failed(Throwable e, Description description) {
+            printThumbsDown();
+        }
+
+        @Override
+        protected void succeeded(Description description){
+            printThumbsUp();
+        }
+
+        /**
+         * Prints thumbs up in ASCII art.
+         */
+        private void printThumbsUp(){
+            System.out.println("");
+            System.out.println("             _");
+            System.out.println("             \\`\\");
+            System.out.println("             |= |");
+            System.out.println("            /-  ;.---.");
+            System.out.println("      _ __.'     (____)");
+            System.out.println("       `         (_____)");
+            System.out.println("       _'  ._ .' (____)");
+            System.out.println("        `        (___)");
+            System.out.println("      --`'------'`");
+        }
+
+        /**
+         * Prints thumbs down in ASCII art.
+         */
+        private void printThumbsDown(){
+            System.out.println("");
+            System.out.println("         _,....._");
+            System.out.println("        (___     `'-.__");
+            System.out.println("       (____");
+            System.out.println("       (____");
+            System.out.println("       (____         ___");
+            System.out.println("            `)   .-'`");
+            System.out.println("            /  .'");
+            System.out.println("           | =|");
+            System.out.println("            \\_\\");
+        }
+    }
+
 
 
     /**
@@ -86,8 +141,8 @@ public class FromFilesTester {
      *
      */
     private static void add(String[] line){
-        int value = 0;
-        boolean result = false;
+        int value;
+        boolean result;
         try{
             value = Integer.parseInt(line[VALUE]);
             result = Boolean.parseBoolean(line[RESULT]);
@@ -105,22 +160,14 @@ public class FromFilesTester {
         try{
             int counter=0;
             for (String blah: line){
-                if (blah == null) break;
+                if (blah == null) break;  // If null, no more numbers
                 else counter++;
             }
-            int[] values = new int[counter];
-            for (int num = 0; num<counter; num++){
-                try{
-                    values[num] = Integer.parseInt(line[num]);
-                } catch (Exception e){
-                    //null
-                }
+            int[] values = new int[counter];  // values to construct with array
+            for (int num = 0; num<counter; num++){  //  Parsing Strings to ints.
+                values[num] = Integer.parseInt(line[num]);
             }
-            try{
-                myTree = new AvlTree(values);
-            }catch (Exception e){
-                //
-            }
+            myTree = new AvlTree(values);
         }catch (Exception e){
             System.err.print("ERROR: Could not call data constructor.");
         }
@@ -166,48 +213,34 @@ public class FromFilesTester {
         try{
             value = Integer.parseInt(line[VALUE]);
             result = Boolean.parseBoolean(line[RESULT]);
-            assertEquals("Failed at: 'delete'", myTree.add(value), result);
+            assertEquals("Failed at: 'delete'", myTree.delete(value), result);
         } catch (Exception e){
             //null
         }
     }
 
-    public static void printThumbsUp(){
-        System.out.println("             _");
-        System.out.println("             \\`\\");
-        System.out.println("             |= |");
-        System.out.println("            /-  ;.---.");
-        System.out.println("      _ __.'     (____)");
-        System.out.println("       `         (_____)");
-        System.out.println("       _'  ._ .' (____)");
-        System.out.println("        `        (___)");
-        System.out.println("      --`'------'`");
+    private static void deleteChars(int amount){
+        while (amount > 0){
+            System.out.print("\b");
+            amount--;
+        }
     }
 
-    public static void printThumbsDown(){
-        System.out.println("         _,....._");
-        System.out.println("        (___     `'-.__");
-        System.out.println("       (____");
-        System.out.println("       (____");
-        System.out.println("       (____         ___");
-        System.out.println("            `)   .-'`");
-        System.out.println("            /  .'");
-        System.out.println("           | =|");
-        System.out.println("            \\_\\");
-    }
     @Test
     public void main(){
         try{
-            getAllTestsFiles();
-            int currentFile = 0;
-            for (String[][] file: test){
-                System.out.println("Now testing: " + fileNames[currentFile]);
-                lineLoop: for (String[] line: file){
-                    for (String word: line){
+            getAllTestsFiles();  // Loads all files,lines and words.
+            int currentFile = 0;  // Counter to keep current file updated.
+            int currentLine = 1;
+            for (String[][] file: test){  // Iterates on files
+                System.out.println("\n# Now testing: '" + fileNames[currentFile] + "'");  //Prints current file on
+                System.out.print("* Current Line: " + currentLine + ", ");
+                lineLoop: for (String[] line: file){  // Iterates on lines
+                    for (String word: line){  // Iterates on words
                         if (word == null){  // Reached end of file/last line of file
                             break lineLoop;
                         }
-                        else if (word.equals("#")){  // comment line
+                        else if (word.equals("#")){  // comment line - ignore.
                             break;
                         }
                         else if (word.equals(CONSTRUCT)) {  // "" - Construct default
@@ -233,20 +266,16 @@ public class FromFilesTester {
                                 // not an integer! (data constructor)
                             }
                         }
-                        currentFile++;
                         break;
                     }
+                    System.out.print(++currentLine +", ");  // Prints the continuation of the current line
                 }
+                System.out.println("");  // Prepares for net current file print.
+                currentLine=1;  // Resets line.
+                currentFile++;  // Just to keep current file name updated..
             }
         } catch(Exception e){
-            printThumbsDown();
+            // throw something at someone
         }
-        printThumbsUp();
     }
-
-    private void printProgress(String[][] file, String[] line, String word) {
-        System.out.println("Now in file:" + file[0][1] + ",\nAt line:" + line + ",\nRunning command: " + line[0] + " " +line[1] + " " + line[2]);
-    }
-
-
 }
