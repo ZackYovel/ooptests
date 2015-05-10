@@ -1,0 +1,36 @@
+
+Most of the format is:
+<cmd> <value> <result to expect>
+
+For example: Both of lines should return true.
+add 5 true
+contains 5 true
+
+Commands:
+
+NOTE: # - at the start of a line is a comment.
+NOTE2: You can leave blank lines to make it easier to read, ONLY AFTER YOU CALLED CONSTRUCTOR.
+
+Obeys format: <cmd> <value> <result>
+	add
+	contains
+	delete
+	minNodes
+
+Obeys format: <cmd>
+	c - DEFAULT Constructor. 'c' only. will ignore other words after it.
+OOPs staff FORMAT:
+	"" - empty line in file.
+
+
+Obeys format: <cmd> <int1> <int2> <int3> ... <intk>
+	data - Constructs with data.
+
+OOPs staff format to construct a tree with data:
+	<int1> <int2> <int3> ... <intk>
+Custom command, to make it comfortable or less confusing:
+	data <int1> <int2> <int3> ... <intk>
+
+OOPs format to copy tree:
+	<int1> <int2> <int3> ... <intk>   - creates tree1 (or data <int1> <int2> <int3> ... <intk>)
+	copy       - copies tree1 to tree2
