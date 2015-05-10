@@ -7,27 +7,29 @@ import org.junit.rules.Timeout;
 import java.io.File;
 
 import static org.junit.Assert.*;
-public class AvlTreeTest {
+
+
+/**
+ * Tests from files using the downlisted conventions:
+ *
+ * by Ben Asaf.
+ */
+public class FromFilesTester {
 
     @Rule
     public Timeout globalTimeout = new Timeout(100000); // 10 seconds max per method tested
 
-    int[] arrayOne = {1,5,10,15,30,59,90,100,150,160};  // 10 elements
-    int[] arrayTwo = {90,100,150,1601,5,10,15,30,59,1500,36,11,41,48,57};  // 15 elements
-    //
-    int[] arrayThree = {81, 62, 57, 77, 96, 56, 99, 23, 79, 32, 53, 15, 18, 26, 75, 12, 22, 8, 89, 63, 0,
-            73, 66, 85, 21, 36, 35, 25, 0, 42, 39, 37, 71, 45, 0, 83, 19, 5, 51, 78,  13, 3, 48, 58, 54, 72,
-            24, 91, 52, 2, 41, 33, 100, 93, 95, 4, 74, 65, 0, 92, 80};  // 61 Elements
-
-    private static AvlTree myTree;
+    private static AvlTree myTree;  // The general AvlTree type variable that the tester works with.
 
     private static final String FULL_PATH = "./src/oop/ex4/data_structures/tests/";
     private static final String RELATIVE_PATH = "./tests/";
-    private static final int MAX_WORDS = 20;
-    private static final int MAX_LINES = 20;
-    public static String[][][] test = null;
 
+    private static final int MAX_WORDS = 20;  // Maximum words per line. example: add 1 true (3). etc..
+    private static final int MAX_LINES = 20;  // Maximum lines of commands in a file.
+    public static String[][][] test = null;  // Files, Lines, Words - 3d array.
+    private static String[] fileNames = null;
 
+    // Commands used:
     private static final String CONSTRUCT = "";
     private static final String ADD = "add";
     private static final String CONTAINS = "contains";
@@ -35,14 +37,23 @@ public class AvlTreeTest {
     private static final String SIZE = "size";
     private static final String MIN_NODES = "minNodes";
 
+    // Some constants...
+    private static final int CMD = 0;
+    private static final int VALUE = 1;
+    private static final int RESULT = 2;
 
 
-
+    /**
+     * Loads all the files, lines and splits to words.
+     * @throws Exception - Throws a nuke.
+     */
     public static void getAllTestsFiles() throws Exception{
         File folder = new File(FULL_PATH);
         File[] filesList = folder.listFiles();
+        fileNames = new String[filesList.length];
         test = new String[filesList.length][MAX_LINES][MAX_WORDS];
         for (int file = 0; file<test.length; file++){
+            fileNames[file] = filesList[file].getName();
             String[] lines = Ex3Utils.fileToLines(FULL_PATH + filesList[file].getName());
             for (int line = 0; line < lines.length; line++){
                 String[] words = lines[line].split(" ");
@@ -53,11 +64,16 @@ public class AvlTreeTest {
         }
     }
 
+    /**
+     * Runs the add method from the AvlTree.
+     *
+     * @param line - String[] from the current line working on from file.
+     */
     private static void findMinNodes(String[] line){
         int[] values = new int[2];
         try{
-            values[0] = Integer.parseInt(line[1]);
-            values[1] = Integer.parseInt(line[2]);
+            values[0] = Integer.parseInt(line[VALUE]);
+            values[1] = Integer.parseInt(line[RESULT]);
             assertEquals("Failed at: 'findMinNodes'", myTree.findMinNodes(values[0]), values[1]);
         } catch (Exception e){
             //null
@@ -65,18 +81,26 @@ public class AvlTreeTest {
 
     }
 
+    /**
+     * Runs the default constructor from the AvlTree.
+     *
+     */
     private static void add(String[] line){
         int value = 0;
         boolean result = false;
         try{
-            value = Integer.parseInt(line[1]);
-            result = Boolean.parseBoolean(line[2]);
+            value = Integer.parseInt(line[VALUE]);
+            result = Boolean.parseBoolean(line[RESULT]);
             assertEquals("Failed at: 'add'", myTree.add(value), result);
         } catch (Exception e){
             // null
         }
     }
 
+    /**
+     * Runs the data constructor from the AvlTree.
+     *
+     */
     private static void constructWithData(String[] line) {
         try{
             int counter=0;
@@ -102,6 +126,10 @@ public class AvlTreeTest {
         }
     }
 
+    /**
+     * Runs the default constructor from the AvlTree.
+     *
+     */
     private static void constructDefault(){
         try{
             myTree = new AvlTree();
@@ -110,24 +138,34 @@ public class AvlTreeTest {
         }
     }
 
+    /**
+     * Runs the contains method from the AvlTree.
+     *
+     * @param line - String[] from the current line working on from file.
+     */
     private static void contains(String[] line){
         int value;
         int result;
         try{
-            value = Integer.parseInt(line[1]);
-            result = Integer.parseInt(line[2]);
+            value = Integer.parseInt(line[VALUE]);
+            result = Integer.parseInt(line[RESULT]);
             assertEquals("Failed at: 'contains'", myTree.contains(value), result);
         } catch (Exception e){
             //null
         }
     }
 
+    /**
+     * Runs the delete method from the AvlTree.
+     *
+     * @param line - String[] from the current line working on from file.
+     */
     private static void delete(String[] line){
         int value;
         boolean result;
         try{
-            value = Integer.parseInt(line[1]);
-            result = Boolean.parseBoolean(line[2]);
+            value = Integer.parseInt(line[VALUE]);
+            result = Boolean.parseBoolean(line[RESULT]);
             assertEquals("Failed at: 'delete'", myTree.add(value), result);
         } catch (Exception e){
             //null
@@ -161,7 +199,9 @@ public class AvlTreeTest {
     public void main(){
         try{
             getAllTestsFiles();
+            int currentFile = 0;
             for (String[][] file: test){
+                System.out.println("Now testing: " + fileNames[currentFile]);
                 lineLoop: for (String[] line: file){
                     for (String word: line){
                         if (word == null){  // Reached end of file/last line of file
@@ -170,30 +210,30 @@ public class AvlTreeTest {
                         else if (word.equals("#")){  // comment line
                             break;
                         }
-                        else if (word.equals(CONSTRUCT)) {
+                        else if (word.equals(CONSTRUCT)) {  // "" - Construct default
                             constructDefault();
                         }
-                        else if (word.equals(ADD)) {
+                        else if (word.equals(ADD)) {  // "add" keyword
                             add(line);
                         }
-                        else if (word.equals(DELETE)) {
+                        else if (word.equals(DELETE)) {  // "delete" keyword
                             delete(line);
                         }
-                        else if (word.equals(MIN_NODES)) {
+                        else if (word.equals(MIN_NODES)) {  // 'minNodes' keyword
                             findMinNodes(line);
                         }
-                        else if (word.equals(CONTAINS)) {
+                        else if (word.equals(CONTAINS)) {  // 'contains' keyword
                             contains(line);
                         }
-                        else{  // If parsed the String into Integer successfully->Initialize tree with data
+                        else{  // If none of them: data constructor. will try to parse the string into int.
                             try{
-                                System.out.println(line.length);
                                 int num = Integer.parseInt(word);  // If integer, will continue to next line
-                                constructWithData(line);
-                            } catch (NumberFormatException e) {
-                                // not an integer!
+                                constructWithData(line);  // It is integer, call data constructor.
+                            } catch (NumberFormatException e) {  // Not integers, not data constructor.
+                                // not an integer! (data constructor)
                             }
                         }
+                        currentFile++;
                         break;
                     }
                 }
