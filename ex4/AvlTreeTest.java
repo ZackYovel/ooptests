@@ -44,7 +44,7 @@ public class AvlTreeTest {
         test = new String[filesList.length][MAX_LINES][MAX_WORDS];
         for (int file = 0; file<test.length; file++){
             String[] lines = Ex3Utils.fileToLines(FULL_PATH + filesList[file].getName());
-            for (int line = 0; line < lines.length-1; line++){
+            for (int line = 0; line < lines.length; line++){
                 String[] words = lines[line].split(" ");
                 for (int word = 0; word < words.length; word++){
                     test[file][line][word] = words[word];
@@ -53,7 +53,7 @@ public class AvlTreeTest {
         }
     }
 
-    private static void findMinNodes(String[] line) throws Exception {
+    private static void findMinNodes(String[] line){
         int[] values = new int[2];
         try{
             values[0] = Integer.parseInt(line[1]);
@@ -81,7 +81,8 @@ public class AvlTreeTest {
         try{
             int counter=0;
             for (String blah: line){
-                counter++;
+                if (blah == null) break;
+                else counter++;
             }
             int[] values = new int[counter];
             for (int num = 0; num<counter; num++){
@@ -91,9 +92,13 @@ public class AvlTreeTest {
                     //null
                 }
             }
-            myTree = new AvlTree(values);
+            try{
+                myTree = new AvlTree(values);
+            }catch (Exception e){
+                //
+            }
         }catch (Exception e){
-            System.err.print("ERROR: Could call data constructor.");
+            System.err.print("ERROR: Could not call data constructor.");
         }
     }
 
@@ -101,7 +106,7 @@ public class AvlTreeTest {
         try{
             myTree = new AvlTree();
         }catch (Exception e){
-            System.err.print("ERROR: Could call default constructor.");
+            System.err.print("ERROR: Could not call default constructor.");
         }
     }
 
@@ -159,7 +164,7 @@ public class AvlTreeTest {
             for (String[][] file: test){
                 lineLoop: for (String[] line: file){
                     for (String word: line){
-                        if (word == null){
+                        if (word == null){  // Reached end of file/last line of file
                             break lineLoop;
                         }
                         else if (word.equals("#")){  // comment line
@@ -182,6 +187,7 @@ public class AvlTreeTest {
                         }
                         else{  // If parsed the String into Integer successfully->Initialize tree with data
                             try{
+                                System.out.println(line.length);
                                 int num = Integer.parseInt(word);  // If integer, will continue to next line
                                 constructWithData(line);
                             } catch (NumberFormatException e) {
@@ -195,7 +201,7 @@ public class AvlTreeTest {
         } catch(Exception e){
             printThumbsDown();
         }
-    printThumbsUp();
+        printThumbsUp();
     }
 
     private void printProgress(String[][] file, String[] line, String word) {

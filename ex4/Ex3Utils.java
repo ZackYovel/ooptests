@@ -83,10 +83,10 @@ public class Ex3Utils {
 
 		} catch (FileNotFoundException e) {
 			System.err.println("ERROR: The file: " + fileName + " is not found.");
-			return null; 
+			return null;
 		} catch (IOException e) {
 			System.err.println("ERROR: An IO error occurred.");
-			return null; 
+			return null;
 		} finally {
 			// Try to close the file
 			try {
