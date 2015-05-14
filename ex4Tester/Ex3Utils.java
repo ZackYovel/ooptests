@@ -5,8 +5,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A utilities class.
+ * A utilities class. made by OOP staff edited by Ben Asaf.
  *
+ * LAST UPDATED: 15/5/2015 00:30 PM
+ * VERSION: V1.3
  */
 public class Ex3Utils {
 
@@ -83,10 +85,10 @@ public class Ex3Utils {
 
 		} catch (FileNotFoundException e) {
 			System.err.println("ERROR: The file: " + fileName + " is not found.");
-			return null;
+			return null; 
 		} catch (IOException e) {
 			System.err.println("ERROR: An IO error occurred.");
-			return null;
+			return null; 
 		} finally {
 			// Try to close the file
 			try {
