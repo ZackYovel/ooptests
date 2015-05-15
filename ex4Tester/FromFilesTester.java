@@ -22,7 +22,7 @@ public class FromFilesTester {
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     ///////////////////////////// YOU CAN EDIT STUFF IN-HERE: /////////////////////////////////////////
     // Path related:
-    private static final String DEFAULT_PATH = "C:\\tests\\";   // DEFAULT PATH
+    private static final String DEFAULT_PATH = "src\\oop\\ex4\\data_structures\\tests\\";   // DEFAULT PATH
     /////////// PRINT TREE RELATED:
     // ROOT OF TREE RELATED:
     private static final String TREE_ROOT_VARIABLE_NAME = "rootTree";  // What is the name of the variable that holds the root tree?
