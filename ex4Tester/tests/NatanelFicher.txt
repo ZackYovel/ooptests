@@ -1,0 +1,27 @@
+# Check that your tree is still Avl after the remove.
+c
+add 8 true
+add 3 true
+add 13 true
+add 2 true
+add 5 true
+add 10 true
+add 16 true
+add 1 true
+add 4 true
+add 6 true
+add 9 true
+add 11 true
+add 15 true
+add 18 true
+add 7 true
+add 12 true
+add 14 true
+add 17 true
+add 19 true
+add 20 true
+size 20
+print
+delete 4 true
+size 19
+print

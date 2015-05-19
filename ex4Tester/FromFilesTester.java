@@ -11,8 +11,8 @@ import java.util.concurrent.TimeUnit;
  *
  * by Ben Asaf.
  *
- * LAST UPDATED: 15/5/2015 00:30 PM
- * VERSION: V1.3
+ * LAST UPDATED: 19/5/2015 01:00 AM
+ * VERSION: V1.3.1
  */
 public class FromFilesTester {
     // Printer style constants
@@ -28,7 +28,7 @@ public class FromFilesTester {
     private static final String TREE_ROOT_VARIABLE_NAME = "rootTree";  // What is the name of the variable that holds the root tree?
     private static final String ROOT_OF_TREE_VARIABLE_LOCATION = "Tree";  // In what class is the variable declared? Father of AvlTree? in AvlTree?
     // NODE OF TREE RELATED:
-    private static final String NODE_CLASS_NAME = "TreeNode";  // Name of the class you are using for the Nodes in the tree
+    private static final String NODE_CLASS_NAME = "Node";  // Name of the class you are using for the Nodes in the tree
     private static final String GET_LEFT_VARIABLE_NAME = "left";  // Name of the variable you are using to to hold left node
     private static final String GET_RIGHT_VARIABLE_NAME = "right";  // Name of the variable you are using to to hold right node
     private static final String GET_VALUE_VARIABLE_NAME = "value";  // Name of the variable you are using to to hold the value
@@ -115,20 +115,25 @@ public class FromFilesTester {
                 treePrinterStyleOne.printTree(rootVariable);
             }*/
             //else{ // STYLE_TWO
-        //}
+            //}
             TreePrinterStyleTwo treePrinterStyleTwo = new TreePrinterStyleTwo(PACKAGE+NODE_CLASS_NAME, GET_LEFT_VARIABLE_NAME, GET_RIGHT_VARIABLE_NAME, GET_VALUE_VARIABLE_NAME);
             treePrinterStyleTwo.printTree(rootVariable);
-                System.out.println("\n");  // To make sure other prints start at new line
-                isNewLineNeeded = true;
+            System.out.println("\n");  // To make sure other prints start at new line
+            isNewLineNeeded = true;
         }catch (NoSuchFieldException e){
+            e.printStackTrace();
             System.err.println("No Field by the name: '" + TREE_ROOT_VARIABLE_NAME + "' was found!");
         }catch (ClassNotFoundException e){
+            e.printStackTrace();
             System.err.println("No Class by the name: '" + ROOT_OF_TREE_VARIABLE_LOCATION + "' was found!");
         }catch (IllegalAccessException e){
+            e.printStackTrace();
             System.err.println("Could not get access to the roots tree variable!");
         }catch (NullPointerException e){
+            e.printStackTrace();
             System.err.println("ERROR: Could not print tree! Tree Variable is null");
         } catch (IllegalArgumentException e){
+            e.printStackTrace();
             System.err.println("ERROR: Could not print tree! Could not find value in the AvlTree instance that is in-use!");
         } catch (IOException e) {
             e.printStackTrace();
@@ -165,6 +170,7 @@ public class FromFilesTester {
                 }
             }
         }catch (Exception e){
+            e.printStackTrace();
             printError("");
         }
     }
@@ -187,10 +193,11 @@ public class FromFilesTester {
                         currentLine + "\nUsed command: 'findMinNodes(" + value + ")'\nExpected: " + expected + ", Actual: " + actual);
             }
         }catch (NullPointerException e){
+            e.printStackTrace();
             printError("NULL POINTER EXCEPTION when trying to call 'findMinNodes' method!" + "\nFile: " + fileNames[currentFile] + "\nLine: " + currentLine);
         } catch (Exception e){
+            e.printStackTrace();
             printError("EXCEPTION at: 'findMinNodes'" + "\nFile: " + fileNames[currentFile] + "\nLine: " + currentLine );
-
         }
     }
 
@@ -215,12 +222,14 @@ public class FromFilesTester {
             expected = Boolean.parseBoolean(line[RESULT]);
             actual = myTree.add(value);
             if (actual != expected){
-                printError("EXCEPTION at 'add' method!" + "\nFile: " + fileNames[currentFile] + "\nLine: " +
+                printError("Failed at 'add' method!" + "\nFile: " + fileNames[currentFile] + "\nLine: " +
                         currentLine + "\nUsed command: 'add(" + value + ")'\nExpected: " + expected + ", Actual: " + actual);
             }
         }catch (NullPointerException e){
+            e.printStackTrace();
             printError("NULL POINTER EXCEPTION when trying to call 'add' method!" + "\nFile: " + fileNames[currentFile] + "\nLine: " + currentLine);
         } catch (Exception e){
+            e.printStackTrace();
             printError("EXCEPTION at 'add' method!" + "\nFile: " + fileNames[currentFile] + "\nLine: " + currentLine);
 
         }
@@ -242,10 +251,12 @@ public class FromFilesTester {
                         currentLine + "\nExpected: " + expected + ", Actual: " + actual);
             }
         }catch (NullPointerException e){
+            e.printStackTrace();
             printError("NULL POINTER EXCEPTION when trying to call 'size' method!" + "\nFile: " + fileNames[currentFile] + "\nLine: " + currentLine);
         } catch (Exception e){
+            e.printStackTrace();
             printError("EXCEPTION at: 'size'" + "\nFile: " + fileNames[currentFile] + "\nLine: " + currentLine +
-                        "\n Possible reason:  Make sure you wrote the command 'size <int>'!" );
+                    "\n Possible reason:  Make sure you wrote the command 'size <int>'!" );
         }
     }
 
@@ -256,8 +267,10 @@ public class FromFilesTester {
         try{
             myTree = new AvlTree(myTree);  // Now can continue working with myTree and experiment even more
         }catch (NullPointerException e){
+            e.printStackTrace();
             printError("NULL POINTER EXCEPTION when trying to copy AVL Tree using constructor." + "\nFile: " + fileNames[currentFile] + "\nLine: " + currentLine);
         }catch (Exception e){
+            e.printStackTrace();
             printError("EXCEPTION when trying to copy AVL Tree using constructor." + "\nFile: " + fileNames[currentFile] + "\nLine: " + currentLine);
         }
     }
@@ -283,8 +296,10 @@ public class FromFilesTester {
             }
             myTree = new AvlTree(values);
         }catch (NullPointerException e){
+            e.printStackTrace();
             printError("NULL POINTER EXCEPTION when trying to call data constructor." + "\nFile: " + fileNames[currentFile] + "\nLine: " + currentLine);
         }catch (Exception e){
+            e.printStackTrace();
             printError("EXCEPTION at call to data constructor." + "\nFile: " + fileNames[currentFile] + "\nLine: " + currentLine);
         }
     }
@@ -296,8 +311,10 @@ public class FromFilesTester {
         try{
             myTree = new AvlTree();
         }catch (NullPointerException e){
+            e.printStackTrace();
             printError("NULL POINTER EXCEPTION when trying to call to default constructor." + "\nFile: " + fileNames[currentFile] + "\nLine: " + currentLine);
         }catch (Exception e){
+            e.printStackTrace();
             printError("EXCEPTION at call to default constructor." + "\nFile: " + fileNames[currentFile] + "\nLine: " + currentLine);
         }
     }
@@ -320,8 +337,10 @@ public class FromFilesTester {
                         currentLine + "\nUsed command: 'contains(" + value + ")'\nExpected: " + result + ", Actual: " + actual);
             }
         }catch (NullPointerException e){
+            e.printStackTrace();
             printError("NULL POINTER EXCEPTION when trying to call to 'contains' method." + "\nFile: " + fileNames[currentFile] + "\nLine: " + currentLine);
         }catch (Exception e){
+            e.printStackTrace();
             printError("EXCEPTION at 'contains' method!" + "\nFile: " + fileNames[currentFile] + "\nLine: " + currentLine );
         }
     }
@@ -344,8 +363,10 @@ public class FromFilesTester {
                         currentLine + "\nUsed command: 'delete(" + value + ")'\nExpected: " + expected + ", Actual: " + actual);
             }
         }catch (NullPointerException e){
+            e.printStackTrace();
             printError("NULL POINTER EXCEPTION when trying to call 'deleted' method!" + "\nFile: " + fileNames[currentFile] + "\nLine: " + currentLine);
         } catch (Exception e){
+            e.printStackTrace();
             printError("EXCEPTION at 'deleted' method!" + "\nFile: " + fileNames[currentFile] + "\nLine: " + currentLine );
         }
     }
@@ -400,7 +421,7 @@ public class FromFilesTester {
                         }
                         if (i != 0 && i%ITERATOR_MAX_ITEMS_PER_LINE == 0){
                             System.out.print("\n" + ITERATOR_LINE_INDENT + ITERATOR_LINE_INDENT
-                                                +ITERATOR_LINE_INDENT);
+                                    +ITERATOR_LINE_INDENT);
                         }
                     }
                     System.out.println("]\n");
@@ -408,6 +429,7 @@ public class FromFilesTester {
                 }catch (ArrayIndexOutOfBoundsException e){  // If out of bounds.. not all values returned.
                     throw new NoSuchElementException();
                 }catch (InputMismatchException e){  // In-case values are not in-order
+                    e.printStackTrace();
                     System.err.print("INPUT MISMATCH EXCEPTION at 'iterator' method!" + "\nFile: " +
                             fileNames[currentFile] + "\nLine: " + currentLine + "\nReason: Did not return values in-order!!" + "\nExpected: ");
                     printArrayGiven(treeValuesCopy);
@@ -418,14 +440,17 @@ public class FromFilesTester {
                 }
             }
         }catch (NoSuchElementException e){
+            e.printStackTrace();
             printError("NO SUCH ELEMENT EXCEPTION at 'iterator' method!" + "\nFile: " +
                     fileNames[currentFile] + "\nLine: " + currentLine + "\nReason: Did not return all values!"+
                     "\nExpected: " + treeSize + ", Actual: " + counter + ITERATOR_POSSIBLE_CAUSES);
         }catch (NullPointerException e){
+            e.printStackTrace();
             printError("NULL POINTER EXCEPTION at 'iterator' method!" + "\nFile: " + fileNames[currentFile]
                     + "\nLine: " + currentLine + "\nPossible Reason: AvlTree 'iterator' method raises null exception" +
                     " somewhere.");
         }catch (RuntimeException e){
+            e.printStackTrace();
             printError("EXCEPTION at 'iterator' method!\nPossible Reason: Iterator did not return any values" +
                     " as expected." + "\nFile: " + fileNames[currentFile] + "\nLine: " + currentLine);
         }
@@ -468,6 +493,7 @@ public class FromFilesTester {
                 myTree.add(randValue);
             }
         }catch (NullPointerException e) {
+            e.printStackTrace();
             printError("NULL POINTER EXCEPTION at 'stress add' method!" + "\nFile: " + fileNames[currentFile]
                     + "\nLine: " + currentLine + "\nPossible Reason: Your tree couldn't handle it, collapsed and returned NULL! DEBUG PLEASE!");
         }
@@ -512,9 +538,11 @@ public class FromFilesTester {
                 }
             }
         }catch (InputMismatchException e){
+            e.printStackTrace();
             System.err.println("ERROR: Could not run 'stressdel' command since tree is empty! size == 0." + "\nFile: " + fileNames[currentFile]
                     + "\nLine: " + currentLine);
         } catch (RuntimeException e){
+            e.printStackTrace();
             System.err.print("\nERROR AT: 'stressdel' method! Tried to delete a value that exists but tree said it didnt." + "\nFile: " + fileNames[currentFile]
                     + "\nLine: " + currentLine + "\n\nTried to remove the value: '" + lastTriedToDeleteValue + "'. \nHere is the iterator from the tree as for now: ");
             delayPrint(500);
@@ -539,7 +567,7 @@ public class FromFilesTester {
         try {
             TimeUnit.MILLISECONDS.sleep(milliseconds);  // delaying for a bit, so it wont mix up with other lines.
         } catch (InterruptedException e) {
-            //Handle exception
+            e.printStackTrace();
         }
     }
 
@@ -716,6 +744,7 @@ public class FromFilesTester {
                 wasConstructedAlready = false;
             }
         }catch(Exception e){  // Should not reach here
+            e.printStackTrace();
             printError("Woops! Something bad happened :-( \nReason unknown.");
         }
         printThumbsUp();  // IF PASSED ALL TESTS FILES :-)
